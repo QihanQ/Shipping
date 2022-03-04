@@ -1,7 +1,7 @@
 public class Address {
     private String streetName;
     private String streetNumber;
-    private String apartmentNumber;
+    private String apartmentNumber = "";
     private String city;
     private String state;
     private int zipCode;
@@ -28,21 +28,25 @@ public class Address {
     
     public Address(String s)
     {
-        streetNumber = s.substring(0 , s.indexOf(" ");
+        streetNumber = s.substring(0 , s.indexOf(" "));
         s = s.substring(s.indexOf(" ") + 1);
         if(s.indexOf("Apt") != -1)
         {
-            streetName = s.substring(0 , s.indexOf("Apt));
+            streetName = s.substring(0 , s.indexOf("Apt") - 1);
             s = s.substring(s.indexOf("Apt"));
             apartmentNumber = s.substring(s.indexOf(" ") + 1 , s.indexOf(","));
-            s = s.substring(s.indexOf(",") + 1);
+            s = s.substring(s.indexOf(",") + 2);
         }
         else
         {
             streetName = s.substring(0 , s.indexOf(","));
-            s = s.substring(s.indexOf(",") + 1);
+            s = s.substring(s.indexOf(",") + 2);
         }
-        
+        city = s.substring(0, s.indexOf(","));
+        s = s.substring(s.indexOf(",") + 2);
+        state  = s.substring(0, s.indexOf(" "));
+        s = s.substring(s.indexOf(" ") + 1);
+        zipCode = Integer.parseInt(s);
     }
 
     public String getStreetName()
@@ -74,5 +78,47 @@ public class Address {
     {
         return zipCode;
     }
+
+    public boolean compareAddress(Address a)
+    {
+        if(streetName != a.getStreetName())
+        {
+            return false;
+        }
+        if(streetNumber != a.getStreetNumber())
+        {
+            return false;
+        }
+        if(apartmentNumber != a.getApartmentNumber())
+        {
+            return false;
+        }
+        if(city != a.getCity())
+        {
+            return false;
+        }
+        if(state != a.getState())
+        {
+            return false;
+        }
+        if(zipCode != a.getZipCode())
+        {
+            return false;
+        }
+        return true;
+
+    }
+
+    public String toString()
+    {
+        String f = streetNumber + " " + streetName;
+        if(apartmentNumber != "")
+        {
+            f += " Apt " + apartmentNumber;
+        }
+        f+= ", " + city + ", " + state + " " + zipCode;
+        return f;
+    }
+
 }
 
